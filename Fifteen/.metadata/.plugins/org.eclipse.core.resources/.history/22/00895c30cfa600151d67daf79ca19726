@@ -1,0 +1,62 @@
+import java.util.Random;
+import java.util.Scanner;
+
+public class Play {
+
+	public static void main(String[] args) {
+        Scanner console = new Scanner(System.in);
+        System.out.println("First to 15 wins"); 
+        System.out.println("Let's play"); 
+        int n = 1;
+        String[] move = null; 
+        boolean valid = false; 
+        
+        while (n < 16) {
+	        while (!valid) {
+	        	move = console.nextLine().split(" ");
+		        valid = checkValid(move, false, n); 
+	        }
+	        n += move.length; 
+	        valid = false; 
+	        System.out.print("Your Move:"); 
+	        // System.out.println(n); 
+	        update(n); 
+			if (n == 16) 
+				System.out.println("You Win");
+	        n += computerMove(n);
+	        System.out.print("Computer Move:");
+	        update(n); 
+	        if (n == 16)
+	        	System.out.println("You Lose");
+        }
+	}
+	
+	public static void update(int n) {
+		for (int i = 1; i < n; i++)
+			System.out.print(" " + i); 
+		System.out.println(); 
+	}
+
+	public static boolean checkValid(String[] move, boolean valid, int n) {
+		if (move.length == 0 || move.length > 3 || n + move.length > 16) {
+			System.out.println("Invalid. Try Again"); 
+			return false; 
+		}
+		for (int i = 0; i < move.length; i++) {
+			if (Integer.parseInt(move[i]) != n) {
+				System.out.println("Invalid. Try Again"); 
+				return false; 
+			}
+			n++; 
+		}
+		return true; 
+	}
+	
+	public static int computerMove(int n) {
+		Random r = new Random(); 
+		int num = r.nextInt(3) + 1;
+		if (n + num > 16)
+			return 16 - n; 
+		return num; 
+	}
+}

@@ -1,0 +1,82 @@
+import java.util.Random;
+import java.util.Scanner;
+
+// Computer randomly chooses to count one, two, or three number
+// Rules of game: Starting at 1, each player will take turns counting
+// Each play must say at least one number but at most three 
+// First player to say 15 wins 
+public class EasyMode {
+	private static Scanner console;
+
+	public static void main(String[] args) {
+        console = new Scanner(System.in);
+        System.out.print("Rules:"); 
+        System.out.println("\tYou can count up one, two, or three numbers"); 
+        System.out.println("\tFirst player to 15 wins");
+        System.out.println("Let's Play"); 
+        int n = 1;
+        String[] move = null; 
+        boolean valid = false; 
+        
+        while (n < 16) {
+	        System.out.print("Your Move:\t ");
+	        while (!valid) {
+	        	move = console.nextLine().split(" ");
+		        valid = checkValid(move, false, n); 
+	        }
+	        n += move.length; 
+	        valid = false; 
+	         
+	        // update(n); 
+			if (n == 16) 
+				System.out.println("You Win");
+			else {
+		        n += computerMove(n);
+		        // System.out.print("Computer Move:\t");
+		        // update(n); 
+		        if (n == 16)
+		        	System.out.println("You Lose");
+			}
+        }
+	}
+	
+	public static void update(int n) {
+		for (int i = 1; i < n; i++)
+			System.out.print(" " + i); 
+		System.out.println(); 
+	}
+
+	public static boolean checkValid(String[] move, boolean valid, int n) {
+		if (move.length == 0 || move.length > 3 || n + move.length > 16) {
+			System.out.println("Invalid. Try Again"); 
+			return false; 
+		}
+		for (int i = 0; i < move.length; i++) {
+			if (Integer.parseInt(move[i]) != n) {
+				System.out.println("Invalid. Try Again"); 
+				return false; 
+			}
+			n++; 
+		}
+		return true; 
+	}
+	
+	public static int computerMove(int n) {
+		Random r = new Random(); 
+		int num = r.nextInt(3) + 1;
+		System.out.print("Computer Move:\t");
+		
+		if (n + num > 16) {
+			for (int i = n; i < 16; i++)
+				System.out.print(" " + i);
+			System.out.println();
+			return 16 - n; 
+		}
+		
+		for (int i = n; i < n + num; i++)
+			System.out.print(" " + i);
+		System.out.println(); 
+		
+		return num; 
+	}
+}
